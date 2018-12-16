@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "CarregarArquivo.cpp"
 #include <cmath>
+#include "Sounds.hpp"
 using std::string;
 
 bool full = false;
@@ -381,7 +382,7 @@ void iniciatextura_Ogro(){
     try
     {
 
-        ifstream arq("textura.bmp" ,ios::binary);
+        ifstream arq("resources/texturaogro.bmp" ,ios::binary);
         char c;
         if(!arq)
             cout << "Erro abriu";
@@ -420,8 +421,8 @@ void iniciatextura_Ogro(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     // Seleciona o modo de aplicação da textura
-    //glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    // glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 
 
 }
@@ -475,7 +476,7 @@ void iniciatextura_Centauro(){
 }
 void Inicializa(void)
 {
-
+    florestabackground();
     Centauro.Carregar("resources/cent.obj");//carrega o arquivo.
     Ogro.Carregar("resources/OgreOBJ.obj");
 // Define a cor de fundo da janela de visualização como branca
@@ -637,20 +638,24 @@ void teclado(unsigned char c,int x, int y)
 
     if(c == 'd')
     {
-        trans_X++;
+        trans_X+=3;
+        cavaloandando();
     }
     else if(c == 's')
     {
-        trans_Z++;
+        trans_Z+=3;
+        cavaloandando();
     }
     else if(c == 'w')
     {
-        trans_Z--;
+        trans_Z-=3;
+        cavaloandando();
 
     }
       else if(c == 'a')
     {
-       trans_X--;
+       trans_X-=3;
+       cavaloandando();
 
     }
      else if(c == 27)

@@ -44,20 +44,21 @@
 	<vector>
 	<string>
 
-1544976908 source:c:\users\marco\documents\github\centauroeogro_opengl\sounds.cpp
+1544993547 source:c:\users\marco\documents\github\centauroeogro_opengl\sounds.cpp
 	"Sounds.hpp"
 
 1544811785 c:\users\marco\documents\github\centauroeogro_opengl\sounds.hpp
 	<windows.h>
 	<mmsystem.h>
 
-1544987324 source:c:\users\marco\documents\github\centauroeogro_opengl\main.cpp
+1544993559 source:c:\users\marco\documents\github\centauroeogro_opengl\main.cpp
 	<GL/gl.h>
 	<GL/glut.h>
 	<stdio.h>
 	<stdlib.h>
 	"CarregarArquivo.cpp"
 	<cmath>
+	"Sounds.hpp"
 
 1544220202 c:\users\marco\documents\github\centauroeogro_opengl\carregararquivo.cpp
 	<stdlib.h>
