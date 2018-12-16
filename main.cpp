@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include "CarregarArquivo.cpp"
 #include <cmath>
+using std::string;
+
 bool full = false;
 void PosicionaObservador(void);
 void EspecificaParametrosVisualizacao(void);
@@ -38,6 +40,8 @@ float final = 1.0;
 
 // Armazena identificação da textura
 GLuint textura_id,textura_id2,textura_id3;
+GLuint texturaskybox[6];
+
 //1 = chao, 2 = centauro, 3 = ogro
 
 void DefineIluminacao (void)
@@ -63,7 +67,101 @@ void DefineIluminacao (void)
     glEnable(GL_LIGHT0);
 }
 // Função callback chamada para fazer o desenho
+void Desenha_SkyBox(){
+    int i;
 
+    float t=1.0;
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_LIGHTING);
+
+	glDisable(GL_TEXTURE_GEN_S);
+	glDisable(GL_TEXTURE_GEN_T);
+
+//	glEnable(GL_TEXTURE_2D);
+
+	GLint* viewport = new GLint[4];
+	GLdouble* model = new GLdouble[16];
+	GLdouble* proj = new GLdouble[16];
+
+	GLdouble posx, posy, posz;
+
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	glGetDoublev(GL_MODELVIEW_MATRIX, model);
+	glGetDoublev(GL_PROJECTION_MATRIX, proj);
+	gluUnProject( (viewport[2]-viewport[0])/2, (viewport[3]-viewport[1])/2, 0.0, model, proj, viewport, &posx, &posy, &posz);
+
+	glPushMatrix();
+	glTranslatef(posx, posy, posz);
+    glColor3f(1.0, 1.0, 1.0);
+   glBindTexture(GL_TEXTURE_2D,texturaskybox[0]);
+   glBegin(GL_QUADS);			// X Négatif
+		glTexCoord2f(0.0, 1.0); glVertex3f(t,-t,t);
+		glTexCoord2f(1.0, 1.0); glVertex3f(t,-t,-t);
+		glTexCoord2f(1.0, 0.0); glVertex3f(t,t,-t);
+		glTexCoord2f(0.0, 0.0); glVertex3f(t,t,t);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D,texturaskybox[1]);
+
+	glBegin(GL_QUADS);			// X Positif
+		glTexCoord2f(0.0, 1.0); glVertex3f(-t,-t,-t);
+		glTexCoord2f(1.0, 1.0); glVertex3f(-t,-t,t);
+		glTexCoord2f(1.0, 0.0); glVertex3f(-t,t,t);
+		glTexCoord2f(0.0, 0.0); glVertex3f(-t,t,-t);
+	glEnd();
+
+
+	glBindTexture(GL_TEXTURE_2D,texturaskybox[2]);
+
+	glBegin(GL_QUADS);			// Y Négatif
+		glTexCoord2f(0.0, 1.0); glVertex3f(-t,-t,t);
+		glTexCoord2f(1.0, 1.0); glVertex3f(t,-t,t);
+		glTexCoord2f(1.0, 0.0); glVertex3f(t,t,t);
+		glTexCoord2f(0.0, 0.0); glVertex3f(-t,t,t);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D,texturaskybox[3]);
+
+	glBegin(GL_QUADS);			// Y Positif
+		glTexCoord2f(0.0, 1.0); glVertex3f(t,-t,-t);
+		glTexCoord2f(1.0, 1.0); glVertex3f(-t,-t,-t);
+		glTexCoord2f(1.0, 0.0); glVertex3f(-t,t,-t);
+		glTexCoord2f(0.0, 0.0); glVertex3f(t,t,-t);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D,texturaskybox[4]);
+
+	glBegin(GL_QUADS);			// Z Négatif
+		glTexCoord2f(0.0, 0.0); glVertex3f(t,t,-t);
+		glTexCoord2f(1.0, 0.0); glVertex3f(-t,t,-t);
+		glTexCoord2f(1.0, 1.0); glVertex3f(-t,t,t);
+		glTexCoord2f(0.0, 1.0); glVertex3f(t,t,t);
+	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D,texturaskybox[5]);
+
+	glBegin(GL_QUADS);			// Z Positif
+		glTexCoord2d(0.0, 1.0);	glVertex3f(t, -t, -t);
+		glTexCoord2d(1.0, 1.0);	glVertex3f(t, -t, t);
+		glTexCoord2d(1.0, 0.0); glVertex3f(-t, -t, t);
+		glTexCoord2d(0.0, 0.0);	glVertex3f(-t, -t, -t);
+	glEnd();
+
+
+	glPopMatrix();
+
+	//glDisable(GL_TEXTURE_2D);
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+
+
+	delete[] proj;
+	delete[] model;
+	delete[] viewport;
+
+
+
+}
 void Desenha_Centauro(){
     glBindTexture(GL_TEXTURE_2D, textura_id2);
 
@@ -131,6 +229,7 @@ void Desenha_Ogro(){
         glEnd( );
     }
 }
+
 void Desenha(void){
     // Limpa a janela de visualização com a cor
     // de fundo definida previamente
@@ -139,12 +238,12 @@ void Desenha(void){
     // Troca cor corrente para azul
     glColor3f(0.0f, 1.0f, 0.0f);
     PosicionaObservador();
-
+//    displaySkybox("resources/skybox/lado4.jpg","resources/skybox/lado3.jpg","resources/skybox/lado2.jpg","resources/skybox/lado1.jpg","resources/skybox/chao.jpg","resources/skybox/ceu.jpg");
     glPushMatrix();
 
 
     glEnable(GL_TEXTURE_2D);
-
+    Desenha_SkyBox();
     Desenha_Chao();
 
     glPushMatrix();
@@ -166,6 +265,69 @@ void Desenha(void){
 }
 
 // Inicialização
+void iniciatextura_SkyBox(){
+    int isky;
+    for(isky=0;isky<6;isky++){
+        try
+        {
+            ifstream arq("resources/skybox/sky0.bmp" ,ios::binary);
+            if(isky==0)
+                ifstream arq("resources/skybox/sky0.bmp" ,ios::binary);
+            if(isky==1)
+                ifstream arq("resources/skybox/sky1.bmp" ,ios::binary);
+            if(isky==2)
+                ifstream arq("resources/skybox/sky2.bmp" ,ios::binary);
+            if(isky==3)
+                ifstream arq("resources/skybox/sky3.bmp" ,ios::binary);
+            if(isky==4)
+                ifstream arq("resources/skybox/sky4.bmp" ,ios::binary);
+            if(isky==5)
+                ifstream arq("resources/skybox/sky5.bmp" ,ios::binary);
+            char c;
+            if(!arq)
+                cout << "Erro abriu";
+            int i = 0;
+            for(int i = 0; i < 122 ; i++)
+                c = arq.get();
+            for(int i = 0; i < 1024 ; i++)
+                for(int j = 0; j < 1024 ; j++)
+                {
+                    c = arq.get();
+                    tex[i][j][2] = c;
+                    c =  arq.get();
+                    tex[i][j][1] = c ;
+                    c =  arq.get();
+                    tex[i][j][0] = c;
+                }
+
+            arq.close();
+            arq.clear();
+        }
+        catch(...)
+        {
+            cout << "Erro ao ler imagem" << endl;
+        }
+        // lena
+        glGenTextures(1,&texturaskybox[isky]);
+
+        // Associa a textura aos comandos seguintes
+        glBindTexture(GL_TEXTURE_2D, texturaskybox[isky]);
+
+        // Envia a textura para uso pela OpenGL
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1024, 1024, 0, GL_RGB ,GL_UNSIGNED_BYTE, tex);
+
+        // Define os filtros de magnificação e minificação
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+        // Seleciona o modo de aplicação da textura
+        //glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    }
+
+}
 void iniciatextura_Chao(){
      try
     {
@@ -202,11 +364,13 @@ void iniciatextura_Chao(){
     glBindTexture(GL_TEXTURE_2D, textura_id);
 
     // Envia a textura para uso pela OpenGL
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, 1024, 1024, 0, GL_BGR ,GL_UNSIGNED_BYTE, tex);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1024, 1024, 0, GL_RGB ,GL_UNSIGNED_BYTE, tex);
 
     // Define os filtros de magnificação e minificação
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
     // Seleciona o modo de aplicação da textura
     //glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -338,7 +502,7 @@ void Inicializa(void)
 // observador virtual
     rotX = 0;
     rotY = 0;
-
+    iniciatextura_SkyBox();
     iniciatextura_Chao();
     iniciatextura_Centauro();
     iniciatextura_Ogro();

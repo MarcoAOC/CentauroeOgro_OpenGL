@@ -51,3 +51,21 @@
 	<windows.h>
 	<mmsystem.h>
 
+1544985218 source:c:\users\marco\documents\github\centauroeogro_opengl\main.cpp
+	<GL/gl.h>
+	<GL/glut.h>
+	<stdio.h>
+	<stdlib.h>
+	"CarregarArquivo.cpp"
+	<cmath>
+
+1544220202 c:\users\marco\documents\github\centauroeogro_opengl\carregararquivo.cpp
+	<stdlib.h>
+	<iostream>
+	<fstream>
+	<GL/gl.h>
+	<GL/glut.h>
+	<stdlib.h>
+	<vector>
+	<string>
+
