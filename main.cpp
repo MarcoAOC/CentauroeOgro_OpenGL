@@ -20,7 +20,6 @@ float volante = 0.0;
 GLubyte tex[1024][1024][3];
 GLubyte tex2[256][256][3];
 
-float posiciona_carro = 90.0;
 
 float trans_X = 0.0;
 float trans_Z = 0.0;
@@ -166,7 +165,6 @@ void Desenha_Centauro(){
     glBindTexture(GL_TEXTURE_2D, textura_id2);
 
     glTranslated(trans_X,0.0,trans_Z);
-    glRotated(posiciona_carro,0,1,0);
     glRotated(180,0,1,0);
     for ( int j = 0; j < (Centauro.faces).size(); ++j )
     {
@@ -505,6 +503,7 @@ void Inicializa(void)
     translx = 0;
     transly = 0;
     translz=0;
+    //
     iniciatextura_SkyBox();
     iniciatextura_Chao();
     iniciatextura_Centauro();
@@ -612,47 +611,7 @@ void TeclasEspeciais (int tecla,int x, int y)
     PosicionaObservador();
     glutPostRedisplay();
 }
-void timer(int value)
-{
 
-    if(velocidade > 0)
-    {
-        dire_x = cos((posiciona_carro*3.14159)/180)*0.2*velocidade;
-        dire_z = -sin((posiciona_carro*3.14159)/180)*0.2*velocidade;
-        trans_X = trans_X + dire_x;
-        trans_Z = trans_Z +dire_z;
-        if(trans_X >= 200)
-            trans_X = 200;
-        if(trans_X <= -200)
-            trans_X = -200;
-        if(trans_Z >= 200)
-            trans_Z = 200;
-        if(trans_Z <= -200)
-            trans_Z = -200;
-
-        glutPostRedisplay();
-    }
-    if(velocidade < 0)
-    {
-
-        dire_x = cos((posiciona_carro*3.14159)/180)*0.2*velocidade;
-        dire_z = -sin((posiciona_carro*3.14159)/180)*0.2*velocidade;
-        trans_X = trans_X + dire_x;
-        trans_Z = trans_Z +dire_z;
-        if(trans_X >= 200)
-            trans_X = 200;
-        if(trans_X <= -200)
-            trans_X = -200;
-        if(trans_Z >= 200)
-            trans_Z = 200;
-        if(trans_Z <= -200)
-            trans_Z = -200;
-
-        glutPostRedisplay();
-    }
-     glutTimerFunc(10,timer,0);
-
-}
 void teclado(unsigned char c,int x, int y)
 {
     if(c == 'j'){
@@ -673,28 +632,26 @@ void teclado(unsigned char c,int x, int y)
     if(c == 'k'){
         translz -= 1.5;
     }
-    if(c == 'a')
+
+
+    if(c == 'd')
     {
-        //posiciona_carro = posiciona_carro + volante*0.05;
-        posiciona_carro = posiciona_carro + 5.0;
+        trans_X++;
     }
-    else if(c == 'd')
+    else if(c == 's')
     {
-        posiciona_carro = posiciona_carro - 5.0;;
+        trans_Z++;
 
 
     }
     else if(c == 'w')
     {
-
-        velocidade = 1.0;
-
+        trans_Z--;
 
     }
-      else if(c == 's')
+      else if(c == 'a')
     {
-       velocidade = 0.0;
-
+       trans_X--;
 
     }
      else if(c == 27)
@@ -743,7 +700,7 @@ int main()
     glutKeyboardFunc(teclado);
     // Registra a funcao callback para tratamento do mouse
     glutMouseFunc(GerenciaMouse);
-    glutTimerFunc(10,timer,0);
+    //glutTimerFunc(10,timer,0);
     Inicializa();
     glutMainLoop();
 }
