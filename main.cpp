@@ -78,7 +78,8 @@ void Desenha_SkyBox(){
 	glDisable(GL_TEXTURE_GEN_T);
 
 //	glEnable(GL_TEXTURE_2D);
-
+    glTranslatef(0,50,0);
+    glRotatef(180,1,0,0);
 	GLint* viewport = new GLint[4];
 	GLdouble* model = new GLdouble[16];
 	GLdouble* proj = new GLdouble[16];
@@ -243,7 +244,9 @@ void Desenha(void){
 
 
     glEnable(GL_TEXTURE_2D);
+    glPushMatrix();
     Desenha_SkyBox();
+    glPopMatrix();
     Desenha_Chao();
 
     glPushMatrix();
@@ -270,19 +273,18 @@ void iniciatextura_SkyBox(){
     for(isky=0;isky<6;isky++){
         try
         {
-            ifstream arq("resources/skybox/sky0.bmp" ,ios::binary);
-            if(isky==0)
-                ifstream arq("resources/skybox/sky0.bmp" ,ios::binary);
+            ifstream arq("resources/skybox/amh_rt.bmp" ,ios::binary);
             if(isky==1)
-                ifstream arq("resources/skybox/sky1.bmp" ,ios::binary);
-            if(isky==2)
-                ifstream arq("resources/skybox/sky2.bmp" ,ios::binary);
-            if(isky==3)
-                ifstream arq("resources/skybox/sky3.bmp" ,ios::binary);
-            if(isky==4)
-                ifstream arq("resources/skybox/sky4.bmp" ,ios::binary);
-            if(isky==5)
-                ifstream arq("resources/skybox/sky5.bmp" ,ios::binary);
+                ifstream arq("resources/skybox/amh_lf.bmp" ,ios::binary);
+            else if(isky==2)
+                ifstream arq("resources/skybox/amh_up.bmp" ,ios::binary);
+            else if(isky==3)
+                ifstream arq("resources/skybox/amh_dn.bmp" ,ios::binary);
+            else if(isky==4)
+                ifstream arq("resources/skybox/amh_bk.bmp" ,ios::binary);
+            else if(isky==5)
+                ifstream arq("resources/skybox/amh_ft.bmp" ,ios::binary);
+
             char c;
             if(!arq)
                 cout << "Erro abriu";
@@ -321,6 +323,7 @@ void iniciatextura_SkyBox(){
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+       // glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP);
 
         // Seleciona o modo de aplicação da textura
         //glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -474,8 +477,7 @@ void iniciatextura_Centauro(){
 
 
 }
-void Inicializa(void)
-{
+void Inicializa(void){
     florestabackground();
     Centauro.Carregar("resources/cent.obj");//carrega o arquivo.
     Ogro.Carregar("resources/OgreOBJ.obj");
@@ -515,8 +517,6 @@ void Inicializa(void)
     DefineIluminacao();
     EspecificaParametrosVisualizacao();
 }
-
-
 // Função usada para especificar a posição do observador virtual
 void PosicionaObservador(void)
 {
