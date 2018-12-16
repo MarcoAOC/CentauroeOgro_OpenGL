@@ -206,6 +206,7 @@ void Desenha_Ogro(){
 
     glTranslated(10,0.0,0);
     glRotated(180,0,1,0);
+    glScalef(8.0,8.0,8.0);
     for ( int j = 0; j < (Ogro.faces).size(); ++j )
     {
 
@@ -641,8 +642,6 @@ void teclado(unsigned char c,int x, int y)
     else if(c == 's')
     {
         trans_Z++;
-
-
     }
     else if(c == 'w')
     {
