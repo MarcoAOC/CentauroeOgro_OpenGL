@@ -10,7 +10,7 @@ bool full = false;
 void PosicionaObservador(void);
 void EspecificaParametrosVisualizacao(void);
 
-GLfloat angle, fAspect, rotX, rotY;
+GLfloat angle, fAspect, rotX, rotY,translx,transly,translz;
 GLdouble obsX, obsY, obsZ;
 CarregarArquivo Ogro;
 CarregarArquivo Centauro;
@@ -502,6 +502,9 @@ void Inicializa(void)
 // observador virtual
     rotX = 0;
     rotY = 0;
+    translx = 0;
+    transly = 0;
+    translz=0;
     iniciatextura_SkyBox();
     iniciatextura_Chao();
     iniciatextura_Centauro();
@@ -522,9 +525,9 @@ void PosicionaObservador(void)
     glLoadIdentity();
     gluLookAt(0,100,90,0,0,0,0,1,0);
     // Especifica posição do observador e do alvo
-    //glRotatef(rotX,1,0,0);
-    //glRotatef(rotY,0,1,0);
-
+    glRotatef(rotX,1,0,0);
+    glRotatef(rotY,0,1,0);
+    glTranslatef(translx,transly,translz);
 }
 
 
@@ -652,6 +655,24 @@ void timer(int value)
 }
 void teclado(unsigned char c,int x, int y)
 {
+    if(c == 'j'){
+        translx += 1.5;
+    }
+    if(c == 'l'){
+        translx -=1.5;
+    }
+    if(c == 'n'){
+        transly += 1.5;
+    }
+    if(c == 'm'){
+        transly -= 1.5;
+    }
+    if(c == 'i'){
+        translz += 1.5;
+    }
+    if(c == 'k'){
+        translz -= 1.5;
+    }
     if(c == 'a')
     {
         //posiciona_carro = posiciona_carro + volante*0.05;
