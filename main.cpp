@@ -170,7 +170,7 @@ void iniciatextura_Chao(){
      try
     {
 
-        ifstream arq("pista.bmp" ,ios::binary);
+        ifstream arq("resources/grass.bmp" ,ios::binary);
         char c;
         if(!arq)
             cout << "Erro abriu";
@@ -202,7 +202,7 @@ void iniciatextura_Chao(){
     glBindTexture(GL_TEXTURE_2D, textura_id);
 
     // Envia a textura para uso pela OpenGL
-    glTexImage2D(GL_TEXTURE_2D, 0, 3, 1024, 1024, 0, GL_RGB,GL_UNSIGNED_BYTE, tex);
+    glTexImage2D(GL_TEXTURE_2D, 0, 3, 1024, 1024, 0, GL_BGR ,GL_UNSIGNED_BYTE, tex);
 
     // Define os filtros de magnificação e minificação
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
