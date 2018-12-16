@@ -78,7 +78,7 @@ void Desenha_SkyBox(){
 	glDisable(GL_TEXTURE_GEN_T);
 
 //	glEnable(GL_TEXTURE_2D);
-    glTranslatef(0,50,0);
+    glTranslatef(0,100,0);
     glRotatef(180,1,0,0);
 	GLint* viewport = new GLint[4];
 	GLdouble* model = new GLdouble[16];
