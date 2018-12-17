@@ -15,6 +15,13 @@ void EspecificaParametrosVisualizacao(void);
 
 
 //
+static float xz=10,y=0, zz=10;
+float xLado=20, xOgro=20, zOgro=-10;
+
+
+
+
+
 GLfloat angle, fAspect, rotX, rotY,translx,transly,translz,rot_y;
 GLdouble obsX, obsY, obsZ;
 CarregarArquivo Ogro;
@@ -49,8 +56,7 @@ GLuint texturaskybox[6];
 //1 = chao, 2 = centauro, 3 = ogro
 
 void DefineIluminacao (void){
-    GLfloat luzAmbiente[4]= {0.4,
-    0.4,0.4,1.0};
+    GLfloat luzAmbiente[4]= {0.4,0.4,0.4,1.0};
     GLfloat luzDifusa[4]= {1.0,0.0,0.0,1.0}; // "cor"
     GLfloat luzEspecular[4]= {1.0, 1.0, 1.0, 1.0}; // "brilho"
     GLfloat posicaoLuz[4]= {0.0, 150.0, 0.0, 1.0};
@@ -168,6 +174,7 @@ void Desenha_SkyBox(){
 
 }
 void Desenha_Centauro(){
+
     glBindTexture(GL_TEXTURE_2D, textura_id2);
 
     glTranslated(trans_X,0.0,trans_Z);
@@ -633,64 +640,80 @@ void TeclasEspeciais (int tecla,int x, int y)
     glutPostRedisplay();
 }
 
+int colide(GLfloat x, GLfloat z){
+    GLfloat ogro_x=7.0f, ogro_z=0.0f; // posição fixa do ogro
+    GLfloat ogro_w = 20.0f; // largura e altura do ogro
+    GLfloat centauro_w = 10.0f;// largura e altura do centauro
+
+    if(x+centauro_w>ogro_x && x < ogro_x + ogro_w &&z+centauro_w>ogro_z && z < ogro_z+ogro_w)
+        return 1;
+    return 0;
+
+}
 void teclado(unsigned char c,int x, int y)
 {
-    if(c == 'j'){
+    switch (c){
+    case 'j':
         translx += 1.5;
-    }
-    if(c == 'l'){
+        break;
+    case 'l':
         translx -=1.5;
-    }
-    if(c == 'n'){
+        break;
+    case 'n':
         transly += 1.5;
-    }
-    if(c == 'm'){
+        break;
+    case 'm':
         transly -= 1.5;
-    }
-    if(c == 'i'){
+        break;
+    case 'i':
         translz += 1.5;
-    }
-    if(c == 'k'){
+        break;
+    case 'k':
         translz -= 1.5;
-    }
+        break;
 
 
-    if(c == 'd')
-    {
-        trans_X+=3;
-        cavaloandando();
-    }
-    else if(c == 's')
-    {
-        trans_Z+=3;
-        cavaloandando();
-    }
-    else if(c == 'w')
-    {
-        trans_Z-=3;
-        cavaloandando();
-
-    }
-      else if(c == 'a')
-    {
-       trans_X-=3;
+    case 'd':
+        if(!colide(trans_X+3,trans_Z)){
+            trans_X+=3;
+            cavaloandando();
+        }
+        else
+            roar();
+        break;
+    case 's':
+        if(!colide(trans_X,trans_Z+3)){
+            trans_Z+=3;
+            cavaloandando();
+        }
+        else
+            roar();
+        break;
+    case 'w':
+        if(!colide(trans_X,trans_Z-3)){
+            trans_Z-=3;
+            cavaloandando();
+        }
+        else
+            roar();
+        break;
+    case 'a':
+        if(!colide(trans_X-3,trans_Z)){
+            trans_X-=3;
+            cavaloandando();
+        }
+        else
+            roar();
+        break;
+    case 'q':
+        rot_y+=30;
        cavaloandando();
-
-    }
-     else if(c == 'q')
-    {
+        break;
+    case 'e':
         rot_y-=30;
-       cavaloandando();
-
-    }
-     else if(c == 'e')
-    {
-       rot_y-=30;
-       cavaloandando();
-
-    }
-     else if(c == 27)
-    {
+        cavaloandando();
+        break;
+    case 27:
         if(!full){
             glutPositionWindow(0,0);
             glutFullScreen();
@@ -702,6 +725,9 @@ void teclado(unsigned char c,int x, int y)
         }
         full = (!full);
 
+        break;
+    default:
+        break;
     }
     glutPostRedisplay();
 }
