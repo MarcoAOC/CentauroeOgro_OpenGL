@@ -11,7 +11,7 @@ bool full = false;
 void PosicionaObservador(void);
 void EspecificaParametrosVisualizacao(void);
 
-GLfloat angle, fAspect, rotX, rotY,translx,transly,translz;
+GLfloat angle, fAspect, rotX, rotY,translx,transly,translz,rot_y;
 GLdouble obsX, obsY, obsZ;
 CarregarArquivo Ogro;
 CarregarArquivo Centauro;
@@ -44,10 +44,10 @@ GLuint texturaskybox[6];
 
 //1 = chao, 2 = centauro, 3 = ogro
 
-void DefineIluminacao (void)
-{
-    GLfloat luzAmbiente[4]= {0.4,0.4,0.4,1.0};
-    GLfloat luzDifusa[4]= {0.7,0.7,0.7,1.0}; // "cor"
+void DefineIluminacao (void){
+    GLfloat luzAmbiente[4]= {0.4,
+    0.4,0.4,1.0};
+    GLfloat luzDifusa[4]= {1.0,0.0,0.0,1.0}; // "cor"
     GLfloat luzEspecular[4]= {1.0, 1.0, 1.0, 1.0}; // "brilho"
     GLfloat posicaoLuz[4]= {0.0, 150.0, 0.0, 1.0};
 // Capacidade de brilho do material
@@ -167,7 +167,7 @@ void Desenha_Centauro(){
     glBindTexture(GL_TEXTURE_2D, textura_id2);
 
     glTranslated(trans_X,0.0,trans_Z);
-    glRotated(180,0,1,0);
+    glRotated(180+rot_y,0,1,0);
     for ( int j = 0; j < (Centauro.faces).size(); ++j )
     {
 
@@ -273,17 +273,31 @@ void iniciatextura_SkyBox(){
     for(isky=0;isky<6;isky++){
         try
         {
-            ifstream arq("resources/skybox/amh_rt.bmp" ,ios::binary);
-            if(isky==1)
-                ifstream arq("resources/skybox/amh_lf.bmp" ,ios::binary);
-            else if(isky==2)
-                ifstream arq("resources/skybox/amh_up.bmp" ,ios::binary);
-            else if(isky==3)
-                ifstream arq("resources/skybox/amh_dn.bmp" ,ios::binary);
-            else if(isky==4)
-                ifstream arq("resources/skybox/amh_bk.bmp" ,ios::binary);
-            else if(isky==5)
-                ifstream arq("resources/skybox/amh_ft.bmp" ,ios::binary);
+            ifstream arq;
+            if(isky==0){
+                printf("1");
+                arq.open("resources/skybox/amh_rt.bmp" ,ios::binary);
+            }
+            else if(isky==1){
+                printf("2");
+                arq.open("resources/skybox/amh_lf.bmp" ,ios::binary);
+            }
+            else if(isky==2){
+                printf("3");
+                arq.open("resources/skybox/amh_ft.bmp" ,ios::binary);
+            }
+            else if(isky==3){
+                printf("4");
+                arq.open("resources/skybox/amh_bk.bmp" ,ios::binary);
+            }
+            else if(isky==4){
+                printf("5");
+                arq.open("resources/skybox/amh_dn.bmp" ,ios::binary);
+            }
+            else if(isky==5){
+                printf("6");
+                arq.open("resources/skybox/amh_up.bmp" ,ios::binary);
+            }
 
             char c;
             if(!arq)
@@ -433,7 +447,7 @@ void iniciatextura_Centauro(){
     try
     {
 
-        ifstream arq("textura.bmp" ,ios::binary);
+        ifstream arq("resources/pelo.bmp" ,ios::binary);
         char c;
         if(!arq)
             cout << "Erro abriu";
@@ -507,6 +521,7 @@ void Inicializa(void){
     translx = 0;
     transly = 0;
     translz=0;
+    rot_y=0;
     //
     iniciatextura_SkyBox();
     iniciatextura_Chao();
@@ -655,6 +670,18 @@ void teclado(unsigned char c,int x, int y)
       else if(c == 'a')
     {
        trans_X-=3;
+       cavaloandando();
+
+    }
+     else if(c == 'q')
+    {
+        rot_y-=30;
+       cavaloandando();
+
+    }
+     else if(c == 'e')
+    {
+       rot_y-=30;
        cavaloandando();
 
     }

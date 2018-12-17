@@ -51,7 +51,7 @@
 	<windows.h>
 	<mmsystem.h>
 
-1544998380 source:c:\users\marco\documents\github\centauroeogro_opengl\main.cpp
+1545011677 source:c:\users\marco\documents\github\centauroeogro_opengl\main.cpp
 	<GL/gl.h>
 	<GL/glut.h>
 	<stdio.h>
