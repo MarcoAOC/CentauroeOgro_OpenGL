@@ -10,7 +10,11 @@ using std::string;
 bool full = false;
 void PosicionaObservador(void);
 void EspecificaParametrosVisualizacao(void);
+//TESTES
 
+
+
+//
 GLfloat angle, fAspect, rotX, rotY,translx,transly,translz,rot_y;
 GLdouble obsX, obsY, obsZ;
 CarregarArquivo Ogro;
@@ -486,8 +490,8 @@ void iniciatextura_Centauro(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
     // Seleciona o modo de aplicação da textura
-    //glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    // glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 
 
 }
